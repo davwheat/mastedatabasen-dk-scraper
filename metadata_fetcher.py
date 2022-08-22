@@ -2,6 +2,9 @@ import json
 import urllib.parse
 import requests
 
+
+from requests.adapters import HTTPAdapter, Retry
+
 from typing import Literal
 
 AUTOSAVE_INTERVAL = 50
@@ -54,6 +57,13 @@ def generateFeatureInfoUrl(type: Literal["current", "future"], site: dict) -> st
 def fetchSitesMetadata(sites: list[dict]) -> list[dict]:
     sitesById = {}
 
+    s = requests.Session()
+
+    retries = Retry(total=20, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
+
+    s.mount("http://", HTTPAdapter(max_retries=retries))
+    s.mount("https://", HTTPAdapter(max_retries=retries))
+
     for site in sites:
         sitesById[site["masteId"]] = site
 
@@ -72,7 +82,7 @@ def fetchSitesMetadata(sites: list[dict]) -> list[dict]:
         )
 
         url = generateFeatureInfoUrl("current", site)
-        resp = requests.get(url, timeout=30).json()
+        resp = s.get(url, timeout=10).json()
 
         ops = operator_dict_gen(resp["features"])
 
