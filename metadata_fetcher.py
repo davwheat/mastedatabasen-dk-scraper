@@ -136,6 +136,12 @@ def operator_dict_gen(metadata: list[dict]) -> dict:
         # }
         # }
 
+        op = data["Name"]
+
+        # Manual fixes to prevent duplicate operators
+        if op == "Cibicom Mobility":
+            op = "Cibicom"
+
         operators[data["properties"]["MasteID"]] = data["Name"]
 
     return operators
