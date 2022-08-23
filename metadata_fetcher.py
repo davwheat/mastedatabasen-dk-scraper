@@ -40,7 +40,7 @@ def generateFeatureInfoUrl(type: Literal["current", "future"], site: dict) -> st
         "layers": f"mastedatabasen:{layerName}",
         # "cql_filter": f"TjenesteArtID=2 AND TeknologiID={site['TeknologiID']}",
         "info_format": "application/json",
-        "feature_count": "50",
+        "feature_count": "100",
         "infoidx": "0",
         "crs": "CRS:84",
         "styles": "",
@@ -80,6 +80,10 @@ def fetchSitesMetadata(sites: list[dict]) -> list[dict]:
         print(
             f"Fetching operator for site {site['masteId']}... ({num}/{len(sitesToFetch)})"
         )
+
+        if site["masteId"] in sitesById and "operator" in sitesById[site["masteId"]]:
+            print(f"Skipping site {site['masteId']} - already has operator data...")
+            continue
 
         url = generateFeatureInfoUrl("current", site)
         resp = s.get(url, timeout=10).json()
