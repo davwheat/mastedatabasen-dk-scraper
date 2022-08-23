@@ -28,7 +28,7 @@ python ./scraper.py
 
 By default, for some reason, Mastedatabasen doesn't include operator info within API requests for multiple points. Instead, detailed info about every point must be requested separately, site-by-site.
 
-With Mastedatabasen currently having approx. 50,000 sites, and an average of 1.5s per request, this can take upwards of 13 hours to complete.
+With Mastedatabasen currently having approx. 50,000 sites, this script can take hours to run. Thankfully, API requests often return operator info for multiple sites at once (as each separate frequency is listed internally as a different "site"), so many network requests can be skipped.
 
 The script will automatically read the output from the `scraper.py` script (`sites_current.json`) and load it into memory, then beginning to fetch operator info. When complete, it will output to `sites_current_with_operator.json`. It will also save to this file every 25 requests in case of network issues.
 
