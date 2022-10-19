@@ -142,7 +142,7 @@ def operator_dict_gen(metadata: list[dict]) -> dict:
         if op == "Cibicom Mobility":
             op = "Cibicom"
 
-        operators[data["properties"]["MasteID"]] = data["Name"]
+        operators[data["properties"]["MasteID"]] = op
 
     return operators
 
