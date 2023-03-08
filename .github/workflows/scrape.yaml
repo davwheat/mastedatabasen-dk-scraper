@@ -13,7 +13,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Self-hosted runners get longer job time limits
+    runs-on: [self-hosted, Linux]
 
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
