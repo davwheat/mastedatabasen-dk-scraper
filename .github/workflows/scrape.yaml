@@ -41,9 +41,22 @@ jobs:
         run: |
           python ./scraper.py
 
+      # Merge old and new data to reduce overall number of requests
+      # and time taken to run, otherwise we'd exceed GitHub's max
+      # run time!
+      - name: Combine old data with new sites
+        run: |
+          python ./merge_old_with_new.py
+          mv sites_current.json sites_current.json.new
+          mv merged_data.json sites_current.json
+
+      # Remove the merged data file and restore the original new
+      # sites JSON file.
       - name: Fetch operator info
         run: |
           python ./metadata_fetcher.py
+          rm sites_current.json
+          mv sites_current.json.new sites_current.json
 
       - name: Commit and push dataset
         uses: stefanzweifel/git-auto-commit-action@v4
