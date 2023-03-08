@@ -13,6 +13,8 @@ permissions:
 
 jobs:
   build:
+    name: Run scripts
+
     # Self-hosted runners get longer job time limits
     runs-on: [self-hosted, Linux]
 
